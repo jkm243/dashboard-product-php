@@ -1,0 +1,12 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.modif{
+    height: 100vh;
+}
+.image{
+    width: 100px;
+    height: 100px;
+}
