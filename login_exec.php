@@ -25,3 +25,4 @@ if (isset($_POST['email'], $_POST['pwd'])) {
         header("location: products.php");
     }
 }
+?>
