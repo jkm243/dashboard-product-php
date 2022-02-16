@@ -21,7 +21,7 @@
             $sql = "INSERT INTO `products`(`image`,`name`, `price`, `comments`) VALUES (?,?,?,?)";
             $stmt= $con->prepare($sql);
 
-            $stmt->bind_param("bsss",$picProfile, $name, $price,$comment);
+            $stmt->bind_param("ssss",$picProfile, $name, $price,$comment);
             // $stmt ->bindParam(':pic', $picProfile);
             // $stmt ->bindParam(':nom', $name);
             // $stmt ->bindParam(':price', $price);

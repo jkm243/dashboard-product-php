@@ -156,8 +156,8 @@
                             <tr>
                                 <td ><?= $user['id']; ?></td>
                                 <td >
-                                    <!-- php echo '<img src="data:image;base64,'.base64_encode($user['image']).' " class="img-fluid image" alt="" srcset="">' ?> -->
-                                    <img src="img/<?= $user['image'];?>.png" alt="Image" srcset="" class="img-fluid image">  
+                                    <!-- <php echo '<img src="data:image;base64,'.base64_encode($user['image']).' " class="img-fluid image" alt="" srcset="">' ?> -->
+                                    <img src="img/<?= $user['image'];?>" alt="Image" srcset=img/<?= $user['image'];?> class="img-fluid image">  
                                 </td>
                                 <td ><?= $user['name']; ?></td>
                                 <td ><?= $user['price']; ?></td>
