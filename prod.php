@@ -1,10 +1,23 @@
 <?php
+
   $bdd = new PDO('mysql:host=localhost;dbname=user;','root','');
-  $allusers= $bdd->query('SELECT * FROM products ORDER BY id DESC');
+  $allusers= $bdd->query('SELECT * FROM products');
+
   if (isset($_GET['name']) AND !empty($_GET['name'])){
     $recherche = htmlspecialchars($_GET['name']);
     $allusers = $bdd ->query('SELECT * FROM products WHERE name LIKE "%'.$recherche.'%" ORDER BY id DESC');
   }
+  if(isset($_REQUEST['del'])){
+    $sup = intval($_GET['del']);
+    
+    $sql = "DELETE FROM products WHERE id=:id";
+    $query = $bdd->prepare($sql);
+    $query  -> bindParam(':id',$sup,PDO::PARAM_STR);
+    $query->execute();
+
+    echo "<script>window.location.href='prod.php'</script>";
+  }
+
 ?>
 
 <!doctype html>
@@ -19,6 +32,8 @@
     <title>Dashboard</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
 
 
     <!-- Bootstrap core CSS -->
@@ -26,12 +41,6 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#7952b3">
 
 
@@ -58,59 +67,39 @@
 </head>
 
 <body>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebarMenu" class="col-md-5 col-lg-4 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky pt-3">
                     <div class=" modif p-5 bg-light">
                         <a href="prod.php" class="link-secondary pr-2 pb-5">Dashboard</a>
-                        <a href="#" class="link-secondary p-2 pb-5">Modification</a>
                         <a href="index.php" class="link-secondary p-2 pb-5">Sign Up</a>
 
                         <h2>Element</h2>
-                        <form action="/action_page.php">
+                        <form enctype="multipart/form-data" action="add.php" method="POST">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Ex: Rolex">
+                                <input name="nom" type="text" class="form-control" id="name" placeholder="Ex: Rolex"
+                                    accept="*/image" >
                             </div>
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input type="text" class="form-control " id="price" placeholder="Ex: 50,60,40,...">
+                                <input name="price" type="text" class="form-control " id="price"
+                                    placeholder="Ex: 50,60,40,...">
                             </div>
                             <div class="input-group mt-3 mb-2">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                        aria-describedby="inputGroupFileAddon01">
+                                    <input name="images" type="file" class="custom-file-input" id="inputGroupFile01"
+                                        aria-describedby="inputGroupFileAddon01" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="comment">Comment:</label>
-                                <textarea class="form-control mb-4" rows="5" id="comment"></textarea>
+                                <textarea name="comment" class="form-control mb-4" rows="5" id="comment" ></textarea>
                             </div>
 
-                            <button type="submit" class="btn w-100 btn btn-lg btn-primary" type="submit">Add
+                            <button type="submit" name="ajouter" class="btn w-100 btn btn-lg btn-primary"
+                                type="submit">Add
                                 product</button>
                         </form>
                     </div>
@@ -146,7 +135,8 @@
 
                 <h2>Section title</h2>
                 <div class="table-responsive">
-                    <table class="table table-striped table-sm">
+                <!-- table table-striped table-sm -->
+                    <table class="display " id="example" style="width:100%">
                         <thead>
                             <tr>
                                 <th scope="col">id</th>
@@ -154,33 +144,26 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Comment</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr>
-                            <td>1</td>
-                <td><img src="img/image-2.png" class="img-fluid image" alt="" srcset=""></td>
-                <td>Rolex</td>
-                <td>50</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </td> 
-                </tr> -->
+
                             <?php
                   if($allusers->rowCount()>0){
                     while($user = $allusers->fetch()){
                       ?>
                             <tr>
-                                <td class="pt-3"><?= $user['id']; ?></td>
-                                <td class="pt-3">
-                                    <?php echo '<img src="data:image;base64,'.base64_encode($user['image']).' " class="img-fluid image" alt="" srcset="">'?>
+                                <td ><?= $user['id']; ?></td>
+                                <td >
+                                    <!-- php echo '<img src="data:image;base64,'.base64_encode($user['image']).' " class="img-fluid image" alt="" srcset="">' ?> -->
+                                    <img src="img/<?= $user['image'];?>.png" alt="Image" srcset="" class="img-fluid image">  
                                 </td>
-                                <td class="pt-3"><?= $user['name']; ?></td>
-                                <td class="pt-3"><?= $user['price']; ?></td>
-                                <td class="pt-3"><?= $user['comments']; ?></td>
-                                <td class="pt-3">
-                                    <!-- <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                                        data-target="#exampleModal">
-                                        Modifier
-                                    </button> -->
+                                <td ><?= $user['name']; ?></td>
+                                <td ><?= $user['price']; ?></td>
+                                <td ><?= $user['comments']; ?></td>
+                                <td >
+                                    <a href="update.php?id=<?php echo $user['id'];?>">
                                     <button type="button" class="btn btn-outline-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -189,35 +172,24 @@
                                             <path fill-rule="evenodd"
                                                 d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                         </svg>
-                                        
                                     </button>
-                                    <button type="button" class="btn btn-outline-danger">
+                                    </a>
+
+                                    <a href="prod.php?del=<?php echo $user['id'];?>">
+                                    <button type="button" class="btn btn-outline-danger" onClick="return confirm('Do you want to delete?')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                             <path
                                                 d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
                                         </svg>
-
                                     </button>
-
-
+                                    </a>
                                 </td>
                             </tr>
                             <?php        
                     }
-                  }else{
+                  }
                       ?>
-
-                            <td></td>
-                            <td></td>
-                            <td>Not found</td>
-                            <td></td>
-                            <td></td>
-                            <?php 
-                    }
-                  
-                ?>
-
                         </tbody>
                     </table>
                 </div>
@@ -225,19 +197,25 @@
         </div>
     </div>
 
-
-
-
-    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous">
     </script>
+
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script> 
+    $(document).ready(function() {
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    });
+    </script>
+
 </body>
 
 </html>

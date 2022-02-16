@@ -67,11 +67,15 @@
 </head>
 
 <body class="text-center">
-
     <main class="form-signin">
         <form name="loginform" action="login.php" method="POST">
-            <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <div class="fs-2 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class=" mb-4 bi bi-kanban-fill" viewBox="0 0 16 16">
+  <path d="M2.5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-11zm5 2h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm-5 1a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm9-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/>
+</svg>
+
+            </div>
+            <h1 class="h3 mb-3 fw-normal"></h1>
 
             <?php
             if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
