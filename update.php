@@ -16,10 +16,15 @@
         $picProfile=rand(1000,1000000).".".$imgExt;
         move_uploaded_file($tmp_dir,$updir.$picProfile);
 
-        $sql = "UPDATE `products` SET `image`=?,`name`=?, `price`=?, `comments`=? WHERE id=?";
+        $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:new_id";
         $stmt= $bdd->prepare($sql);
 
-        $stmt->bind_param($picProfile, $name, $price,$comment,$userid);
+        // $stmt->bind_param($picProfile, $name, $price,$comment,$userid);
+        $stmt ->bindParam(':pic', $picProfile);
+        $stmt ->bindParam(':nom', $name);
+        $stmt ->bindParam(':price', $price);
+        $stmt ->bindParam(':comment', $comment);
+        $stmt ->bindParam(':new_id', $userid);
         $stmt->execute();
 
         echo "<script>window.location.href='done.php'</script>";
