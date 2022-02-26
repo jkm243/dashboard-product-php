@@ -18,5 +18,5 @@ Login form, Dashboard, Add item, Modify, Delete and Sign Up
 
 **Client:** HTML, CSS
 
-**Back:** Javascript
+**Back:** Javascript, PHP, MySql
 
