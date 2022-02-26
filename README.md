@@ -1,6 +1,7 @@
 # dashboard-product-php
 
-A cool and simple calculator made for browsers
+A dashboard made with PHP, Bootstrap, HTML, javascript and Css. Connected with a database in MySql
+Login form, Dashboard, Add item, Modify, Delete and Sign Up
 
 
 ## Documentation
@@ -10,7 +11,7 @@ A cool and simple calculator made for browsers
 
 ## Screenshots
 
-![App Screenshot](https://github.com/jkm243/dashboard-product-php/blob/master/img/Video_220226045316.mp4)
+![App Screenshot](https://github.com/jkm243/dashboard-product-php/blob/master/img/Video_220226045316.gif)
 
 
 ## Tech Stack
