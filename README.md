@@ -16,7 +16,7 @@ Login form, Dashboard, Add item, Modify, Delete and Sign Up
 
 ## Tech Stack
 
-**Client:** HTML, CSS
+**Client:** HTML, CSS & Bootstrap
 
 **Back:** Javascript, PHP, MySql
 
