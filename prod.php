@@ -8,8 +8,7 @@
     $allusers = $bdd ->query('SELECT * FROM products WHERE name LIKE "%'.$recherche.'%" ORDER BY id DESC');
   }
   if(isset($_REQUEST['del'])){
-    $sup = intval($_GET['del']);
-    
+    $sup = intval($_GET['del']); 
     $sql = "DELETE FROM products WHERE id=:id";
     $query = $bdd->prepare($sql);
     $query  -> bindParam(':id',$sup,PDO::PARAM_STR);
@@ -74,6 +73,7 @@
                     <div class=" modif p-5 bg-light">
                         <a href="prod.php" class="link-secondary pr-2 pb-5">Dashboard</a>
                         <a href="index.php" class="link-secondary p-2 pb-5">Sign Up</a>
+                        <a href="history.php" class="link-secondary p-2 pb-5">History</a>
 
                         <h2>Element</h2>
                         <form enctype="multipart/form-data" action="add.php" method="POST">
@@ -110,16 +110,6 @@
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2 pt-5">Dashboard</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
                 </div>
                 <form class="form-inline" method="GET">
                     <div class="form-group mx-sm-3 mb-2">
