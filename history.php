@@ -3,34 +3,34 @@
   $bdd = new PDO('mysql:host=localhost;dbname=user;','root','');
   $allusers= $bdd->query('SELECT * FROM history');
 
-  if(isset($_REQUEST['rest']) ){
-    // if($allusers->rowCount()>0){
-        while($user = $allusers->fetch()){ 
-            if($user['meth'] = 'INSERT'){
-                $sup = intval($_GET['rest']);
-                $sql = "DELETE FROM products WHERE id=:id";
-                $query = $bdd->prepare($sql);
-                $query  -> bindParam(':id',$sup,PDO::PARAM_STR);
-                $query->execute();
+//   if(isset($_REQUEST['rest']) ){
+//     // if($allusers->rowCount()>0){
+//         while($user = $allusers->fetch()){ 
+//             if($user['meth'] = 'INSERT'){
+//                 $sup = intval($_GET['rest']);
+//                 $sql = "DELETE FROM products WHERE id=:id";
+//                 $query = $bdd->prepare($sql);
+//                 $query  -> bindParam(':id',$sup,PDO::PARAM_STR);
+//                 $query->execute();
 
-            }elseif($user['meth'] = 'UPDATE'){
-                $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:id_prod"; 
-                $stmt= $bdd->prepare($sql);
-                $stmt ->bindParam(':pic', $user['image']);
-                $stmt ->bindParam(':nom', $user['name']);
-                $stmt ->bindParam(':price', $user['price']);
-                $stmt ->bindParam(':comment', $user['comments']);
-                $stmt ->bindParam(':id_prod', $user['id_prod']);
-                $stmt->execute();
+//             }elseif($user['meth'] = 'UPDATE'){
+//                 $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:id_prod"; 
+//                 $stmt= $bdd->prepare($sql);
+//                 $stmt ->bindParam(':pic', $user['image']);
+//                 $stmt ->bindParam(':nom', $user['name']);
+//                 $stmt ->bindParam(':price', $user['price']);
+//                 $stmt ->bindParam(':comment', $user['comments']);
+//                 $stmt ->bindParam(':id_prod', $user['id_prod']);
+//                 $stmt->execute();
 
-            }elseif($user['meth'] = 'DELETE'){
-                $sql = "INSERT INTO `products`(`image`,`name`, `price`, `comments`) VALUES (?,?,?,?)";
-                $stmt= $con->prepare($sql);
-                $stmt->bind_param("ssss",$user['image'], $user['name'], $user['price'],$user['comments']);
-            }
-        }
-    }
-    //  echo "<script>window.location.href='prod.php'</script>";
+//             }elseif($user['meth'] = 'DELETE'){
+//                 $sql = "INSERT INTO `products`(`image`,`name`, `price`, `comments`) VALUES (?,?,?,?)";
+//                 $stmt= $con->prepare($sql);
+//                 $stmt->bind_param("ssss",$user['image'], $user['name'], $user['price'],$user['comments']);
+//             }
+//         }
+//     }
+//     //  echo "<script>window.location.href='prod.php'</script>";
 ?>
 
 <!doctype html>
@@ -40,7 +40,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="author" content="Jacqueskatsuva">
     <meta name="generator" content="Hugo 0.84.0">
     <title>Dashboard</title>
 
@@ -110,7 +110,6 @@
                                 <th scope="col">Comment</th>
                                 <th scope="col">Method</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">Transaction</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -135,7 +134,7 @@
                                 <td><?= $user['date_mod']; ?></td>
                                 <td>
 
-                                    <a href="restore.php?id=<?php echo $user['id_prod'];?>">
+                                    <a href="restore.php?id=<?php echo $user['id'];?>">
                                         <button type="button" class="btn btn-outline-danger"
                                             onClick="return confirm('Do you want to restore?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
