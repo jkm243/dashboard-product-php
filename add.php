@@ -9,6 +9,8 @@
         die("Failed to connect : ".$con->connect_error);
     } else{
         if (isset($_POST['ajouter'])) { 
+            $rd = rand(1000,1000000);
+            $tr= "TR_".$rd;
             $images=$_FILES['images']['name'];
             $imageSize=$_FILES['images']['size'];
             $tmp_dir=$_FILES['images']['tmp_name'];
