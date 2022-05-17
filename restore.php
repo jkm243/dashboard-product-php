@@ -147,11 +147,8 @@
      $query->execute();
      $resultat = $query->fetchAll(PDO::FETCH_OBJ);
  
-     foreach ($resultat as $row) {
-         
+     foreach ($resultat as $row) {        
          ?>
-
-
             <form enctype="multipart/form-data" action="rest.php" method="GET">
                 <div class="form-group">
                     <label for="name">Name</label>
