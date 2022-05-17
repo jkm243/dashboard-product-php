@@ -1,37 +1,79 @@
 <?php
     $bdd = new PDO('mysql:host=localhost;dbname=user;','root','');
+    $allusers= $bdd->query('SELECT * FROM history');
 
-    if (isset($_POST['update'])) { 
-        $name = $_POST['nom'];
-        $price = $_POST['price'];
-        $comment = $_POST['comment'];
-        $userid = intval($_GET['id']);
+    // if($allusers->rowCount()>0){
+    //     while($user = $allusers->fetch()){
 
-        $images=$_FILES['images']['name'];
-        $imageSize=$_FILES['images']['size'];
-        $tmp_dir=$_FILES['images']['tmp_name'];
-        $updir='img/';
-        $imgExt=strtolower(pathinfo($images,PATHINFO_EXTENSION));
-        $valid_extensions=array('jpeg','jpg','png','gif','pdf');
-        $picProfile=rand(1000,1000000).".".$imgExt;
-        move_uploaded_file($tmp_dir,$updir.$picProfile);
+    //     }
+    // }
+    
+    // $userid = intval($_GET['id']);
+    // $sql = "SELECT `id_prod`,`image`, `name`, `price`, `comments`,`meth` FROM `history` WHERE id=:new_id";
+    // $query = $bdd->prepare($sql);
+    // $query  -> bindParam(':new_id',$userid,PDO::PARAM_STR);
+    // $query->execute();
+    // $resultat = $query->fetchAll(PDO::FETCH_OBJ);
+ 
+    //  foreach ($resultat as $row) {
+    //     $name = $row-> name;
+    //     $price = $row-> price;
+    //     $comment = $row-> comments;
+    //     $image = $row-> image;
+    //     $useridold = $row-> id_prod;
+    //     $meth = $row-> meth;
+    //     if (strval($meth) == "UPDATE" ) {
+    //         $meth_final = "UPDATE";
+    //     }elseif(strval($meth) == "DELETE"){
+    //         $meth_final = "DELETE";
+    //     }else{
+    //         $meth_final = "INSERT";
+    //     }
+    //  }
 
-        $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:new_id";
-        $stmt= $bdd->prepare($sql);
+    // if (isset($_GET[$meth_final])) {    
 
-        // $stmt->bind_param($picProfile, $name, $price,$comment,$userid);
-        $stmt ->bindParam(':pic', $picProfile);
-        $stmt ->bindParam(':nom', $name);
-        $stmt ->bindParam(':price', $price);
-        $stmt ->bindParam(':comment', $comment);
-        $stmt ->bindParam(':new_id', $userid);
-        $stmt->execute();
+    //     $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:new_id";
+    //     $stmt= $bdd->prepare($sql);
 
-        echo "<script>window.location.href='done.php'</script>";
+    //     $stmt ->bindParam(':pic', $picProfile);
+    //     $stmt ->bindParam(':nom', $name);
+    //     $stmt ->bindParam(':price', $price);
+    //     $stmt ->bindParam(':comment', $comment);
+    //     $stmt ->bindParam(':new_id', $useridold);
+    //     $stmt->execute();
+
+    //     echo "<script>window.location.href='done.php'</script>";
        
-    }
+    // }elseif (isset($_GET[$meth_final])) { 
 
+    //     $sql = "INSERT INTO `products`(`image`,`name`, `price`, `comments`) VALUES (?,?,?,?)";
+    //     $stmt= $con->prepare($sql);
 
+    //     $stmt->bind_param("ssss",$image, $name, $price,$comment);
+
+    //     // $stmt->bind_param($picProfile, $name, $price,$comment,$userid);
+    //     // $stmt ->bindParam(':pic', $picProfile);
+    //     // $stmt ->bindParam(':nom', $name);
+    //     // $stmt ->bindParam(':price', $price);
+    //     // $stmt ->bindParam(':comment', $comment);
+    //     // $stmt ->bindParam(':new_id', $userid);
+    //     $stmt->execute();
+
+    //     echo "<script>window.location.href='done.php'</script>";
+       
+    // }elseif (isset($_GET[$meth_final])) { 
+
+    // $sql = "DELETE FROM products WHERE id=:id";
+    // $query = $bdd->prepare($sql);
+    // $query  -> bindParam(':id',$useridold,PDO::PARAM_STR);
+    // $query->execute();
+
+    //     echo "<script>window.location.href='done.php'</script>";
+       
+    // }else{
+    //     echo '<script>alert("Failed to restore")</script>';
+    // }
    ?>
 
 <!doctype html>
@@ -46,8 +88,6 @@
     <title>Update</title>
 
     <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/"> -->
-
-
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -101,18 +141,15 @@
             </div>
             <?php
      $userid = intval($_GET['id']);
-     $sql = "SELECT `image`, `name`, `price`, `comments` FROM `history` WHERE id_prod=:new_id";
+     $sql = "SELECT `image`, `name`, `price`, `comments`,`meth` FROM `history` WHERE id=:new_id";
      $query = $bdd->prepare($sql);
      $query  -> bindParam(':new_id',$userid,PDO::PARAM_STR);
      $query->execute();
      $resultat = $query->fetchAll(PDO::FETCH_OBJ);
  
-     foreach ($resultat as $row) {
-         
+     foreach ($resultat as $row) {        
          ?>
-
-
-            <form enctype="multipart/form-data" action="" method="POST">
+            <form enctype="multipart/form-data" action="rest.php" method="GET">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input name="nom" type="text" class="form-control" id="name" placeholder="Ex: Rolex"
@@ -124,9 +161,8 @@
                         value="<?php echo $row-> price ?>" disabled>
                 </div>
                 <div class="input-group mt-3 mb-2">
-                    <div class="custom-file">
-                        <input name="images" type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01" >
+                    <div class="custom-file text-center">
+                        <img src="<?php echo $row-> image ?>" alt="Image" srcset="<?php echo $row-> image ?>" class="img-fluid image">
                     </div>
                 </div>
                 <div class="form-group">
@@ -135,7 +171,7 @@
                         id="comment" disabled><?php echo $row-> comments ?></textarea>
                 </div>
 
-                <button type="submit" name="update" class="btn w-100 btn btn-lg btn-primary" type="submit">Restore
+                <button type="submit" name="<?php echo strval($row-> meth) ?>" class="btn w-100 btn btn-lg btn-primary" type="submit">Restore your : <?php echo $row-> meth ?>
                 </button>
                 <?php }?>
             </form>
