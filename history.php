@@ -130,11 +130,12 @@
                                 <td><?= $user['name']; ?></td>
                                 <td><?= $user['price']; ?></td>
                                 <td><?= $user['comments']; ?></td>
+
                                 <td><?= $user['meth']; ?></td>
                                 <td><?= $user['date_mod']; ?></td>
                                 <td>
 
-                                    <a href="restore.php?id=<?php echo $user['id'];?>">
+                                    <a href="rst.php?id=<?php echo $user['id_prod'];?>&meth=<?php echo $user['meth'];?>">
                                         <button type="button" class="btn btn-outline-danger"
                                             onClick="return confirm('Do you want to restore?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -143,7 +144,9 @@
                                                 <path fill-rule="evenodd"
                                                     d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
                                                 <path
-                                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.
+                                                    
+                                                    25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
                                             </svg>
                                         </button>
                                     </a>

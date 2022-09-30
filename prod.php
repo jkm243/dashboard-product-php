@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
   $bdd = new PDO('mysql:host=localhost;dbname=user;','root','');
@@ -17,7 +16,6 @@
 
     echo "<script>window.location.href='prod.php'</script>";
   }
-
 ?>
 
 <!doctype html>
