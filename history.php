@@ -135,7 +135,7 @@
                                 <td><?= $user['date_mod']; ?></td>
                                 <td>
 
-                                    <a href="rst.php?id=<?php echo $user['id_prod'];?>&meth=<?php echo $user['meth'];?>">
+                                    <a href="upd.php?id=<?php echo $user['id_prod'];?>&hist=<?php echo $user['id'];?>">
                                         <button type="button" class="btn btn-outline-danger"
                                             onClick="return confirm('Do you want to restore?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
