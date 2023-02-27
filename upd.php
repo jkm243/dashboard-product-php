@@ -15,7 +15,8 @@
         $valid_extensions=array('jpeg','jpg','png','gif','pdf');
         $picProfile=rand(1000,1000000).".".$imgExt;
         move_uploaded_file($tmp_dir,$updir.$picProfile);
-
+        
+        
         $sql = "UPDATE `products` SET `image`=:pic,`name`=:nom, `price`=:price, `comments`=:comment WHERE id=:new_id";
         $stmt= $bdd->prepare($sql);
 
